@@ -1,3 +1,9 @@
 from django.db import models
 
-# Create your models here.
+
+class Member(models.Model):
+    name = models.TextField(default=None)
+
+
+class Supply(models.Model):
+    name = models.TextField(default=None)

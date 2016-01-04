@@ -16,9 +16,11 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from tycoon import views
-from django.contrib import admin
+# from django.contrib import admin
 
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
-    url(r'$', views.home_page, name='home'),
+    url(r'^$', views.home_page, name='home'),
+    url(r'^members/add_member$', views.new_member, name='new_member'),
+    url(r'^supplies/add_supply$', views.new_supply, name='new_supply'),
 ]
