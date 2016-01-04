@@ -45,38 +45,24 @@ class HomePageTest(TestCase):
         self.assertRedirects(response, '/')
 
 
-class MemberModelTest(TestCase):
+class ModelTest(TestCase):
 
     def test_saving_and_retrieving_members(self):
-        first_member = Member()
-        first_member.name = 'Charlie Cook'
-        first_member.save()
-
-        second_member = Member()
-        second_member.name = 'Vinnie Vinnicombe'
-        second_member.save()
+        Member.objects.create(name='Charlie Cook')
+        Member.objects.create(name='Vinnie Vinnicombe')
 
         saved_members = Member.objects.all()
         self.assertEqual(saved_members.count(), 2)
 
-        first_saved_member = saved_members[0]
-        second_saved_member = saved_members[1]
-        self.assertEqual(first_saved_member.name, 'Charlie Cook')
-        self.assertEqual(second_saved_member.name, 'Vinnie Vinnicombe')
+        self.assertEqual(saved_members[0].name, 'Charlie Cook')
+        self.assertEqual(saved_members[1].name, 'Vinnie Vinnicombe')
 
     def test_saving_and_retrieving_supplies(self):
-        first_supply = Supply()
-        first_supply.name = 'Teabags'
-        first_supply.save()
-
-        second_supply = Supply()
-        second_supply.name = 'Coffee'
-        second_supply.save()
+        Supply.objects.create(name='Teabags')
+        Supply.objects.create(name='Coffee')
 
         saved_supplies = Supply.objects.all()
         self.assertEqual(saved_supplies.count(), 2)
 
-        first_saved_member = saved_supplies[0]
-        second_saved_member = saved_supplies[1]
-        self.assertEqual(first_saved_member.name, 'Teabags')
-        self.assertEqual(second_saved_member.name, 'Coffee')
+        self.assertEqual(saved_supplies[0].name, 'Teabags')
+        self.assertEqual(saved_supplies[1].name, 'Coffee')
