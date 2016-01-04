@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block main_content %}
+    <h1>Tea Club - Team 6</h1>
+
+    <h2>Members</h2>
+    <form method="POST" action="/members/add_member">
+        <input name="member_text" id="id_new_member" placeholder="Enter new member name">
+    </form>
+
+    <h2>Supplies</h2>
+    <form method="POST" action="/supplies/add_supply">
+        <input name="supply_text" id="id_new_supply" placeholder="Enter new supply">
+    </form>
+{% endblock %}
