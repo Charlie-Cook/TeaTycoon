@@ -1,15 +1,29 @@
 {% extends 'base.html' %}
 
 {% block main_content %}
-    <h1>Tea Club - Team 6</h1>
+    <div class="row" >
+        <h1>Tea Club - Team 6</h1>
+    </div>
 
-    <h2>Members</h2>
-    <form method="POST" action="/members/add_member">
-        <input name="member_text" id="id_new_member" placeholder="Enter new member name">
-    </form>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-1">
+            <h2>Members</h2>
 
-    <h2>Supplies</h2>
-    <form method="POST" action="/supplies/add_supply">
-        <input name="supply_text" id="id_new_supply" placeholder="Enter new supply">
-    </form>
+            <form method="POST" action="/members/add_member">
+                <input name="member_text" id="id_new_member" class="form-control input-lg" placeholder="Enter new member name">
+            </form>
+        </div>
+
+        <div class="col-md-4 col-md-offset-2">
+            <h2>Supplies</h2>
+
+            <form method="POST" action="/supplies/add_supply">
+                <input name="supply_text" id="id_new_supply" class="form-control input-lg" placeholder="Enter new supply">
+            </form>
+
+            <table id="id_supplies_table" class="table">
+
+            </table>
+        </div>
+    </div>
 {% endblock %}

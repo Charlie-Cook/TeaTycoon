@@ -1,6 +1,6 @@
 from django.core.urlresolvers import resolve
 from django.test import TestCase
-from Tycoon.views import home_page
+from tycoon.views import home_page
 
 
 class HomePageTest(TestCase):

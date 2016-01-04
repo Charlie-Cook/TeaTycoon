@@ -15,7 +15,7 @@ Including another URLconf
     3. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import url, include
-from Tycoon import views
+from tycoon import views
 from django.contrib import admin
 
 urlpatterns = [

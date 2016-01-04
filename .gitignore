@@ -66,3 +66,6 @@ secrets
 
 # Database
 db.sqlite3
+
+# Statics
+static/
