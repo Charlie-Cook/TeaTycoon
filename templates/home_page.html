@@ -25,7 +25,17 @@
                 {% for member in members %}
                     <tr>
                         <td>{{ member.name }}</td>
-                        <td>{{ supply.status }}</td>
+
+                        {% if member.paid == True %}
+                            <td style="color: green;">
+                                Paid
+                            </td>
+                        {% else %}
+                            <td style="color: red;">
+                                Unpaid
+                            </td>
+                        {% endif %}
+
                         <td><a href="/members/{{ member.id }}/collect">Collect</a></td>
                     </tr>
                 {% endfor %}
