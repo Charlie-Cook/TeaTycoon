@@ -32,7 +32,7 @@
                             <td style="color: red;">Unpaid</td>
                         {% endif %}
 
-                        <td><a href="/members/{{ member.id }}/collect">Collect</a></td>
+                        <td id="id_collect_{{ member.id }}"><a href="/members/{{ member.id }}/collect">Collect</a></td>
                     </tr>
                 {% endfor %}
             </table>
@@ -58,7 +58,7 @@
                             <td style="color:red;">Out Of Stock</td>
                         {% endif %}
 
-                        <td><a href="/supplies/{{ supply.id }}/purchase">Purchase</a></td>
+                        <td id="id_purchase_{{ supply.id }}"><a href="/supplies/{{ supply.id }}/purchase">Purchase</a></td>
                     </tr>
                 {% endfor %}
             </table>
