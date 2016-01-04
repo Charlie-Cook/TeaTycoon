@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^$', views.home_page, name='home'),
     url(r'^members/add_member$', views.new_member, name='new_member'),
     url(r'^supplies/add_supply$', views.new_supply, name='new_supply'),
+    url(r'^members/(\d+)/collect', views.collect, name='collect'),
 ]

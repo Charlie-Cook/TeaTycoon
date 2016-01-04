@@ -18,3 +18,10 @@ def new_supply(request):
     name_to_save = request.POST.get('supply_text', '')
     Supply.objects.create(name=name_to_save)
     return redirect('/')
+
+
+def collect(request, member_id):
+    debtor = Member.objects.get(id=member_id)
+    debtor.paid = True
+    debtor.save()
+    return redirect('/')

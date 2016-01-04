@@ -66,3 +66,10 @@ class ModelTest(TestCase):
 
         self.assertEqual(saved_supplies[0].name, 'Teabags')
         self.assertEqual(saved_supplies[1].name, 'Coffee')
+
+    def test_collection_from_member(self):
+        Member.objects.create(name='Charlie Cook', paid=False)
+        self.client.get('/members/1/collect')
+        members = Member.objects.all()
+        debtor = members[0]
+        self.assertTrue(debtor.paid)
