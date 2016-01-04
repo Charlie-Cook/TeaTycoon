@@ -28,11 +28,12 @@
 
                         {% if member.paid == True %}
                             <td style="color: green;">Paid</td>
+                            <td><strike>Collect</strike></td>
                         {% else %}
                             <td style="color: red;">Unpaid</td>
+                            <td id="id_collect_{{ member.id }}"><a href="/members/{{ member.id }}/collect">Collect</a>
+                            </td>
                         {% endif %}
-
-                        <td id="id_collect_{{ member.id }}"><a href="/members/{{ member.id }}/collect">Collect</a></td>
                     </tr>
                 {% endfor %}
             </table>
@@ -54,11 +55,12 @@
 
                         {% if supply.stocked == True %}
                             <td style="color:green;">In Stock</td>
+                            <td><strike>Purchase</strike></td>
                         {% else %}
                             <td style="color:red;">Out Of Stock</td>
+                            <td id="id_purchase_{{ supply.id }}"><a
+                                    href="/supplies/{{ supply.id }}/purchase">Purchase</a></td>
                         {% endif %}
-
-                        <td id="id_purchase_{{ supply.id }}"><a href="/supplies/{{ supply.id }}/purchase">Purchase</a></td>
                     </tr>
                 {% endfor %}
             </table>
@@ -87,7 +89,9 @@
                                    placeholder="Enter amount per person">
                         </div>
                     </form>
-                    <button type="submit" form="collection_form" value="Submit" class="btn" style="margin-top:2ex;">Submit</button>
+                    <button type="submit" form="collection_form" value="Submit" class="btn" style="margin-top:2ex;">
+                        Submit
+                    </button>
                 </div>
             </div>
 
