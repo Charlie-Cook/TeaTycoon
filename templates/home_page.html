@@ -27,13 +27,9 @@
                         <td>{{ member.name }}</td>
 
                         {% if member.paid == True %}
-                            <td style="color: green;">
-                                Paid
-                            </td>
+                            <td style="color: green;">Paid</td>
                         {% else %}
-                            <td style="color: red;">
-                                Unpaid
-                            </td>
+                            <td style="color: red;">Unpaid</td>
                         {% endif %}
 
                         <td><a href="/members/{{ member.id }}/collect">Collect</a></td>
@@ -57,15 +53,44 @@
                         <td>{{ supply.name }}</td>
 
                         {% if supply.stocked == True %}
-                        <td style="color:green;">In Stock</td>
+                            <td style="color:green;">In Stock</td>
                         {% else %}
-                        <td style="color:red;">Out Of Stock</td>
+                            <td style="color:red;">Out Of Stock</td>
                         {% endif %}
 
                         <td><a href="/supplies/{{ supply.id }}/purchase">Purchase</a></td>
                     </tr>
                 {% endfor %}
             </table>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <button type="button" class="btn" data-toggle="modal" data-target="#collection_modal">Start new collection
+            </button>
+        </div>
+    </footer>
+
+    <div id="collection_modal" class="modal fade" role="dialog">
+        <div class="modal-sm modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">New Collection</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="members/new_collection" id="collection_form">
+                        <div class="input-group">
+                            <span class="input-group-addon">£</span>
+                            <input name="collection_amount" id="id_collection_amount" class="form-control input-sm"
+                                   placeholder="Enter amount per person">
+                        </div>
+                    </form>
+                    <button type="submit" form="collection_form" value="Submit" class="btn" style="margin-top:2ex;">Submit</button>
+                </div>
+            </div>
+
         </div>
     </div>
 {% endblock %}
