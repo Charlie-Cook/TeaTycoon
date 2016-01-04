@@ -17,16 +17,16 @@
 
             <form method="POST" action="/members/add_member">
                 <input name="member_text" id="id_new_member" class="form-control input-lg"
-                       placeholder="Enter new member name">
+                       style="margin-bottom: 2ex;" placeholder="Enter new member name">
                 {% csrf_token %}
             </form>
 
             <table id="id_members_table" class="table">
                 {% for member in members %}
                     <tr>
-                        {{ member.name }}
-                        {{ supply.status }}
-                        <a href="/members/{{ member.id }}/collect">Collect</a>
+                        <td>{{ member.name }}</td>
+                        <td>{{ supply.status }}</td>
+                        <td><a href="/members/{{ member.id }}/collect">Collect</a></td>
                     </tr>
                 {% endfor %}
             </table>
@@ -37,16 +37,16 @@
 
             <form method="POST" action="/supplies/add_supply">
                 <input name="supply_text" id="id_new_supply" class="form-control input-lg"
-                       placeholder="Enter new supply">
+                       style="margin-bottom: 2ex;" placeholder="Enter new supply">
                 {% csrf_token %}
             </form>
 
             <table id="id_supplies_table" class="table">
                 {% for supply in supplies %}
                     <tr>
-                        {{ supply.name }}
-                        {{ supply.status }}
-                        <a href="/supplies/{{ supply.id }}/purchase">Purchase</a>
+                        <td>{{ supply.name }}</td>
+                        <td>{{ supply.status }}</td>
+                        <td><a href="/supplies/{{ supply.id }}/purchase">Purchase</a></td>
                     </tr>
                 {% endfor %}
             </table>
