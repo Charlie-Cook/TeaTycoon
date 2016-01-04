@@ -73,3 +73,10 @@ class ModelTest(TestCase):
         members = Member.objects.all()
         debtor = members[0]
         self.assertTrue(debtor.paid)
+
+    def test_purchasing_supplies(self):
+        Supply.objects.create(name='Teabags', stocked=False)
+        self.client.get('/supplies/1/purchase')
+        supplies = Supply.objects.all()
+        new_supply = supplies[0]
+        self.assertTrue(new_supply.stocked)

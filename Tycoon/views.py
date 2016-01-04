@@ -25,3 +25,10 @@ def collect(request, member_id):
     debtor.paid = True
     debtor.save()
     return redirect('/')
+
+
+def purchase(request, supply_id):
+    item = Supply.objects.get(id=supply_id)
+    item.stocked = True
+    item.save()
+    return redirect('/')

@@ -8,3 +8,4 @@ class Member(models.Model):
 
 class Supply(models.Model):
     name = models.TextField(default=None)
+    stocked = models.BooleanField(default=False)

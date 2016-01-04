@@ -55,7 +55,13 @@
                 {% for supply in supplies %}
                     <tr>
                         <td>{{ supply.name }}</td>
-                        <td>{{ supply.status }}</td>
+
+                        {% if supply.stocked == True %}
+                        <td style="color:green;">In Stock</td>
+                        {% else %}
+                        <td style="color:red;">Out Of Stock</td>
+                        {% endif %}
+
                         <td><a href="/supplies/{{ supply.id }}/purchase">Purchase</a></td>
                     </tr>
                 {% endfor %}
