@@ -9,3 +9,8 @@ class Member(models.Model):
 class Supply(models.Model):
     name = models.TextField(default=None)
     stocked = models.BooleanField(default=False)
+
+
+class Collection(models.Model):
+    date = models.DateField(default=None)
+    amount = models.FloatField(default=None)

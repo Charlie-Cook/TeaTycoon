@@ -69,7 +69,7 @@
 
     <footer class="footer">
         <div class="container">
-            <button type="button" class="btn" data-toggle="modal" data-target="#collection_modal">Start new collection
+            <button type="button" id="id_start_collection_btn" class="btn" data-toggle="modal" data-target="#collection_modal">Start new collection
             </button>
         </div>
     </footer>
@@ -87,9 +87,10 @@
                             <span class="input-group-addon">£</span>
                             <input name="collection_amount" id="id_collection_amount" class="form-control input-sm"
                                    placeholder="Enter amount per person">
+                            {% csrf_token %}
                         </div>
                     </form>
-                    <button type="submit" form="collection_form" value="Submit" class="btn" style="margin-top:2ex;">
+                    <button type="submit" id="id_submit_collection" form="collection_form" value="Submit" class="btn" style="margin-top:2ex;">
                         Submit
                     </button>
                 </div>

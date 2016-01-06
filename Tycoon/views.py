@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from tycoon.models import Member, Supply
+from tycoon.models import Member, Supply, Collection
+import datetime as dt
 
 
 def home_page(request):
@@ -14,16 +15,25 @@ def new_member(request):
     return redirect('/')
 
 
-def new_supply(request):
-    name_to_save = request.POST.get('supply_text', '')
-    Supply.objects.create(name=name_to_save)
-    return redirect('/')
-
-
 def collect(request, member_id):
     debtor = Member.objects.get(id=member_id)
     debtor.paid = True
     debtor.save()
+    return redirect('/')
+
+
+def new_collection(request):
+    amount = request.POST.get('collection_amount', '')
+    float(amount)
+    todays_date = dt.date.today().strftime('%Y-%m-%d')
+    Collection.objects.create(date=todays_date, amount=amount)
+    Member.objects.filter(paid=True).update(paid=False)
+    return redirect('/')
+
+
+def new_supply(request):
+    name_to_save = request.POST.get('supply_text', '')
+    Supply.objects.create(name=name_to_save)
     return redirect('/')
 
 

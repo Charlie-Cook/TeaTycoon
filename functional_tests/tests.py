@@ -61,6 +61,8 @@ class AdminVisitorTest(LiveServerTestCase):
     def test_starting_new_collection(self):
         self.browser.get(self.live_server_url)
         self.add_new_member('Charlie Cook')
+        collect_button = self.browser.find_element_by_link_text('Collect')
+        collect_button.click()
         start_collection_btn = self.browser.find_element_by_id('id_start_collection_btn')
         start_collection_btn.click()
         collection_amount_box = self.browser.find_element_by_id('id_collection_amount')
@@ -68,4 +70,4 @@ class AdminVisitorTest(LiveServerTestCase):
         collection_submit_btn = self.browser.find_element_by_id('id_submit_collection')
         collection_submit_btn.click()
         member_table = self.browser.find_element_by_id('id_members_table')
-        self.assertIn('Unpaid', member_table)
+        self.assertIn('Unpaid', member_table.text)
