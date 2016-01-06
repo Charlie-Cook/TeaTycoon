@@ -14,3 +14,8 @@ class Supply(models.Model):
 class Collection(models.Model):
     date = models.DateField(default=None)
     amount = models.FloatField(default=None)
+
+
+class Coffers(models.Model):
+    date = models.DateField(default=None)
+    amount = models.FloatField(default=None)

@@ -1,7 +1,7 @@
 from django.core.urlresolvers import resolve
 from django.test import TestCase
 from tycoon.views import home_page
-from tycoon.models import Member, Supply, Collection
+from tycoon.models import Member, Supply, Collection, Coffers
 import datetime as dt
 
 
@@ -46,6 +46,12 @@ class HomePageTest(TestCase):
 
 
 class ModelTest(TestCase):
+    def create_collection(self):
+        Collection.objects.create(amount=2.00, date=dt.datetime.today().strftime('%Y-%m-%d'))
+
+    def start_coffers(self):
+        Coffers.objects.create(amount=2.00, date=dt.datetime.today().strftime('%Y-%m-%d'))
+
     def test_saving_and_retrieving_members(self):
         Member.objects.create(name='Charlie Cook')
         Member.objects.create(name='Vinnie Vinnicombe')
@@ -66,12 +72,21 @@ class ModelTest(TestCase):
         self.assertEqual(saved_supplies[0].name, 'Teabags')
         self.assertEqual(saved_supplies[1].name, 'Coffee')
 
-    def test_collection_from_member(self):
+    def test_collection_from_member_changes_status(self):
+        self.create_collection()
+        self.start_coffers()
         Member.objects.create(name='Charlie Cook', paid=False)
         self.client.get('/members/1/collect')
         members = Member.objects.all()
         debtor = members[0]
         self.assertTrue(debtor.paid)
+
+    def test_collecting_from_member_increases_coffers(self):
+        self.start_coffers()
+        self.create_collection()
+        Member.objects.create(name='Charlie Cook', paid=False)
+        self.client.get('/members/1/collect')
+        # todo Update collection view to increase coffers by latest collection amount
 
     def test_purchasing_supplies(self):
         Supply.objects.create(name='Teabags', stocked=False)
@@ -80,7 +95,21 @@ class ModelTest(TestCase):
         new_supply = supplies[0]
         self.assertTrue(new_supply.stocked)
 
+    def test_purchasing_supplies_reduces_coffers(self):
+        pass  # todo
+
+    def test_purchase_record_is_updated_when_buying_supply(self):
+        pass  # todo
+
+    def test_marking_supplies_as_depleted(self):
+        Supply.objects.create(name='Teabags', stocked=True)
+        self.client.get('/supplies/1/depleted')
+        supplies = Supply.objects.all()
+        depleted_supply = supplies[0]
+        self.assertFalse(depleted_supply.stocked)
+
     def test_starting_collection_resets_collection_status(self):
+        self.create_collection()
         Member.objects.create(name='Charlie Cook', paid=True)
         self.client.post(
             '/members/new_collection',

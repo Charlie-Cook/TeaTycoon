@@ -8,7 +8,7 @@
     <div class="row">
         <h2>Coffers</h2>
 
-        <h3>{{ tea_coffers }}</h3>
+        <h3>£{{ tea_coffers }}</h3>
     </div>
 
     <div class="row">
@@ -55,7 +55,8 @@
 
                         {% if supply.stocked == True %}
                             <td style="color:green;">In Stock</td>
-                            <td><strike>Purchase</strike></td>
+                            <td><a id="id_depleted"
+                                   href="/supplies/{{ supply.id }}/depleted">Depleted?</a></td>
                         {% else %}
                             <td style="color:red;">Out Of Stock</td>
                             <td id="id_purchase_{{ supply.id }}"><a

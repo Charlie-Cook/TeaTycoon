@@ -27,4 +27,5 @@ urlpatterns = [
     url(r'^members/new_collection$', views.new_collection, name='new_collection'),
     url(r'^supplies/add_supply$', views.new_supply, name='new_supply'),
     url(r'^supplies/(\d+)/purchase$', views.purchase, name='purchase'),
+    url(r'^supplies/(\d+)/depleted$', views.depleted_supply, name='depleted_supply'),
 ]

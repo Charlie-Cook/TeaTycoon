@@ -58,6 +58,18 @@ class AdminVisitorTest(LiveServerTestCase):
         table = self.browser.find_element_by_id('id_supplies_table')
         self.assertIn("In Stock", table.text)
 
+    def test_marking_supplies_as_out_of_stock(self):
+        self.browser.get(self.live_server_url)
+        self.add_new_supply('Teabags')
+        purchase_button = self.browser.find_element_by_link_text('Purchase')
+        purchase_button.click()
+        table = self.browser.find_element_by_id('id_supplies_table')
+        self.assertIn('In Stock', table.text)
+        depleted_button = self.browser.find_element_by_link_text('Depleted?')
+        depleted_button.click()
+        table = self.browser.find_element_by_id('id_supplies_table')
+        self.assertIn('Out Of Stock', table.text)
+
     def test_starting_new_collection(self):
         self.browser.get(self.live_server_url)
         self.add_new_member('Charlie Cook')
