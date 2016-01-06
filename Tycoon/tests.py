@@ -2,7 +2,7 @@ from django.core.urlresolvers import resolve
 from django.test import TestCase
 from tycoon.views import home_page
 from tycoon.models import Member, Supply, Collection, Coffers
-import datetime as dt
+import tycoon.helpers as helper
 
 
 class HomePageTest(TestCase):
@@ -47,10 +47,10 @@ class HomePageTest(TestCase):
 
 class ModelTest(TestCase):
     def create_collection(self):
-        Collection.objects.create(amount=2.00, date=dt.datetime.today().strftime('%Y-%m-%d'))
+        Collection.objects.create(amount=2.00)
 
     def start_coffers(self):
-        Coffers.objects.create(amount=2.00, date=dt.datetime.today().strftime('%Y-%m-%d'))
+        Coffers.objects.create(amount=2.00)
 
     def test_saving_and_retrieving_members(self):
         Member.objects.create(name='Charlie Cook')
@@ -115,8 +115,7 @@ class ModelTest(TestCase):
             '/members/new_collection',
             data={'collection_amount': '2.00'}
         )
-        # Line below gets the latest member in the table - this is useful later
-        only_member = Member.objects.filter(name='Charlie Cook').order_by('-id')[0]
+        only_member = Member.objects.all()[0]
         self.assertFalse(only_member.paid)
 
     def test_collection_saves_correctly(self):
@@ -124,7 +123,8 @@ class ModelTest(TestCase):
             '/members/new_collection',
             data={'collection_amount': '2.55'}
         )
-        latest_collection = Collection.objects.filter().order_by('-id')[0]
-        date_today = dt.datetime.today().strftime('%Y-%m-%d')
-        self.assertEqual(date_today, str(latest_collection.date))
-        self.assertEqual(2.55, latest_collection.amount)
+        latest_collection_amount = helper.get_latest_collection_amount()
+        latest_collection_date = helper.get_latest_collection_date()
+        date_today = helper.get_current_date()
+        self.assertEqual(date_today, str(latest_collection_date))
+        self.assertEqual(2.55, latest_collection_amount)

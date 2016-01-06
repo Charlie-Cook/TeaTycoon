@@ -1,4 +1,5 @@
 from django.db import models
+import datetime as dt
 
 
 class Member(models.Model):
@@ -12,10 +13,10 @@ class Supply(models.Model):
 
 
 class Collection(models.Model):
-    date = models.DateField(default=None)
+    date = models.DateField(default=dt.datetime.today().strftime('%Y-%m-%d'))
     amount = models.FloatField(default=None)
 
 
 class Coffers(models.Model):
-    date = models.DateField(default=None)
+    date = models.DateField(default=dt.datetime.today().strftime('%Y-%m-%d'))
     amount = models.FloatField(default=None)
