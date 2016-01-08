@@ -10,6 +10,7 @@ def get_latest_coffers_amount():
     try:
         latest_coffers_amount = Coffers.objects.order_by('-id')[0].amount
     except IndexError:
+        print('Coffers not found - Making new coffers amount of 0.00')
         Coffers.objects.create(amount=0.00)
         latest_coffers_amount = Coffers.objects.order_by('-id')[0].amount
     return latest_coffers_amount
@@ -19,7 +20,8 @@ def get_latest_collection_amount():
     try:
         latest_collection_amount = Collection.objects.order_by('-id')[0].amount
     except IndexError:
-        Coffers.objects.create(amount=0.00)
+        Collection.objects.create(amount=0.00)
+        print('Collection not found - Making new collection amount of 0.00')
         latest_collection_amount = Collection.objects.order_by('-id')[0].amount
     return latest_collection_amount
 
@@ -28,6 +30,7 @@ def get_latest_collection_date():
     try:
         latest_collection_date = Collection.objects.order_by('-id')[0].date
     except IndexError:
+        print('Collection not found - Making new collection amount of 0.00')
         Collection.objects.create(amount=0.00)
         latest_collection_date = Collection.objects.order_by('-id')[0].date
     return latest_collection_date
