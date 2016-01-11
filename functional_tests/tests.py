@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from tycoon.models import Coffers, Supply
 
 from django.test import LiveServerTestCase
 
@@ -14,6 +15,10 @@ class AdminVisitorTest(LiveServerTestCase):
         self.browser.refresh()
         self.browser.quit()
 
+    def test_viewing_the_page(self):
+        self.browser.get(self.live_server_url)
+        self.assertIn('Tea Tycoon', self.browser.title)
+
     def add_new_member(self, name):
         inputbox = self.browser.find_element_by_id('id_new_member')
         inputbox.send_keys(name)
@@ -24,21 +29,20 @@ class AdminVisitorTest(LiveServerTestCase):
         inputbox.send_keys(name)
         inputbox.send_keys(Keys.ENTER)
 
-    def test_viewing_the_page(self):
-        self.browser.get(self.live_server_url)
-        self.assertIn('Tea Tycoon', self.browser.title)
+    def purchase_first_supply(self):
+        self.browser.execute_script('$("#purchase_form").attr("action", "supplies/1/purchase")')
+        purchase_button = self.browser.find_element_by_link_text('Purchase')
+        purchase_button.click()
+        purchase_cost_input = self.browser.find_element_by_id('id_purchase_amount')
+        purchase_cost_input.send_keys('0.50')
+        save_purchase_button = self.browser.find_element_by_id('id_submit_purchase')
+        save_purchase_button.click()
 
     def test_adding_new_member(self):
         self.browser.get(self.live_server_url)
         self.add_new_member('Charlie Cook')
         table = self.browser.find_element_by_id('id_members_table')
         self.assertIn('Charlie Cook', table.text)
-
-    def test_adding_new_supply(self):
-        self.browser.get(self.live_server_url)
-        self.add_new_supply('Teabags')
-        table = self.browser.find_element_by_id('id_supplies_table')
-        self.assertIn('Teabags', table.text)
 
     def test_collecting_from_member(self):
         self.browser.get(self.live_server_url)
@@ -48,27 +52,6 @@ class AdminVisitorTest(LiveServerTestCase):
         collect_button.click()
         table = self.browser.find_element_by_id('id_members_table')
         self.assertIn("Paid", table.text)
-
-    def test_purchasing_supplies(self):
-        self.browser.get(self.live_server_url)
-        self.add_new_supply('Teabags')
-        # id_collect_1 is equal to the ID of the collect button of user 1
-        purchase_button = self.browser.find_element_by_link_text('Purchase')
-        purchase_button.click()
-        table = self.browser.find_element_by_id('id_supplies_table')
-        self.assertIn("In Stock", table.text)
-
-    def test_marking_supplies_as_out_of_stock(self):
-        self.browser.get(self.live_server_url)
-        self.add_new_supply('Teabags')
-        purchase_button = self.browser.find_element_by_link_text('Purchase')
-        purchase_button.click()
-        table = self.browser.find_element_by_id('id_supplies_table')
-        self.assertIn('In Stock', table.text)
-        depleted_button = self.browser.find_element_by_link_text('Depleted?')
-        depleted_button.click()
-        table = self.browser.find_element_by_id('id_supplies_table')
-        self.assertIn('Out Of Stock', table.text)
 
     def test_starting_new_collection(self):
         self.browser.get(self.live_server_url)
@@ -83,3 +66,41 @@ class AdminVisitorTest(LiveServerTestCase):
         collection_submit_btn.click()
         member_table = self.browser.find_element_by_id('id_members_table')
         self.assertIn('Unpaid', member_table.text)
+
+    def test_adding_new_supply(self):
+        self.browser.get(self.live_server_url)
+        self.add_new_supply('Teabags')
+        table = self.browser.find_element_by_id('id_supplies_table')
+        self.assertIn('Teabags', table.text)
+
+    def test_purchasing_supplies(self):
+        Coffers.objects.create(amount=1.00)
+        self.browser.get(self.live_server_url)
+        self.add_new_supply('Teabags')
+        self.purchase_first_supply()
+        table = self.browser.find_element_by_id('id_supplies_table')
+        self.assertIn("In Stock", table.text)
+
+    def test_marking_supplies_as_out_of_stock(self):
+        Coffers.objects.create(amount=1.00)
+        self.browser.get(self.live_server_url)
+        self.add_new_supply('Teabags')
+        self.purchase_first_supply()
+        table = self.browser.find_element_by_id('id_supplies_table')
+        self.assertIn('In Stock', table.text)
+        depleted_button = self.browser.find_element_by_link_text('Depleted?')
+        depleted_button.click()
+        table = self.browser.find_element_by_id('id_supplies_table')
+        self.assertIn('Out Of Stock', table.text)
+
+    def test_purchasing_supplies_reduces_coffers(self):
+        Coffers.objects.create(amount=1.00)
+        self.browser.get(self.live_server_url)
+        coffers = self.browser.find_element_by_id('coffers_text')
+        before_coffers = coffers.text
+        self.add_new_supply('Teabags')
+        self.purchase_first_supply()
+        coffers = self.browser.find_element_by_id('coffers_text')
+        after_coffers = coffers.text
+        self.assertLess(after_coffers, before_coffers)
+        self.assertIs(after_coffers, 0.50)

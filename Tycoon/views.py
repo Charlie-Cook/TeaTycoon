@@ -4,8 +4,8 @@ import tycoon.helpers as helper
 
 
 def home_page(request):
-    saved_members = Member.objects.all()
-    saved_supplies = Supply.objects.all()
+    saved_members = Member.objects.all().order_by('name')
+    saved_supplies = Supply.objects.all().order_by('name')
 
     current_coffers = helper.get_latest_coffers_amount()
 
@@ -49,6 +49,10 @@ def new_supply(request):
 
 
 def purchase(request, supply_id):
+    amount = request.POST.get('purchase_amount', '')
+    current_coffers = helper.get_latest_coffers_amount()
+    new_coffers = float(current_coffers) - float(amount)
+    Coffers.objects.create(amount=new_coffers)
     item = Supply.objects.get(id=supply_id)
     item.stocked = True
     item.save()

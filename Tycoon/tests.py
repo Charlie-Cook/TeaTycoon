@@ -86,17 +86,28 @@ class ModelTest(TestCase):
         self.create_collection()
         Member.objects.create(name='Charlie Cook', paid=False)
         self.client.get('/members/1/collect')
-        # todo Update collection view to increase coffers by latest collection amount
 
     def test_purchasing_supplies(self):
         Supply.objects.create(name='Teabags', stocked=False)
-        self.client.get('/supplies/1/purchase')
+        self.client.post(
+            '/supplies/1/purchase',
+            data={'purchase_amount': '0.50'}
+        )
         supplies = Supply.objects.all()
         new_supply = supplies[0]
         self.assertTrue(new_supply.stocked)
 
     def test_purchasing_supplies_reduces_coffers(self):
-        pass  # todo
+        Coffers.objects.create(amount=1.00)
+        Supply.objects.create(name='Teabags', stocked=False)
+        before_coffers = helper.get_latest_coffers_amount()
+        self.client.post(
+            '/supplies/1/purchase',
+            data={'purchase_amount': '0.50'}
+        )
+        after_coffers = helper.get_latest_coffers_amount()
+        self.assertLess(after_coffers, before_coffers)
+        self.assertEqual(after_coffers, 0.5)
 
     def test_purchase_record_is_updated_when_buying_supply(self):
         pass  # todo
