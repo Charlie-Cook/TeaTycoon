@@ -30,11 +30,12 @@ class AdminVisitorTest(LiveServerTestCase):
         inputbox.send_keys(Keys.ENTER)
 
     def purchase_first_supply(self):
-        self.browser.execute_script('$("#purchase_form").attr("action", "supplies/1/purchase")')
+        id_of_supply = Supply.objects.all()[0].id
+        self.browser.execute_script('$("#purchase_form").attr("action", "supplies/%s/purchase")' % (id_of_supply,))
         purchase_button = self.browser.find_element_by_link_text('Purchase')
         purchase_button.click()
         purchase_cost_input = self.browser.find_element_by_id('id_purchase_amount')
-        purchase_cost_input.send_keys('0.50')
+        purchase_cost_input.send_keys('1.00')
         save_purchase_button = self.browser.find_element_by_id('id_submit_purchase')
         save_purchase_button.click()
 
@@ -96,11 +97,11 @@ class AdminVisitorTest(LiveServerTestCase):
     def test_purchasing_supplies_reduces_coffers(self):
         Coffers.objects.create(amount=1.00)
         self.browser.get(self.live_server_url)
-        coffers = self.browser.find_element_by_id('coffers_text')
-        before_coffers = coffers.text
+        coffers = self.browser.find_element_by_id('coffers_amount')
+        before_coffers = coffers.text.replace('£', '')
         self.add_new_supply('Teabags')
         self.purchase_first_supply()
-        coffers = self.browser.find_element_by_id('coffers_text')
-        after_coffers = coffers.text
-        self.assertLess(after_coffers, before_coffers)
-        self.assertIs(after_coffers, 0.50)
+        coffers = self.browser.find_element_by_id('coffers_amount')
+        after_coffers = coffers.text.replace('£', '')
+        self.assertLess(float(after_coffers), float(before_coffers))
+        self.assertIs(float(after_coffers), 0.0)

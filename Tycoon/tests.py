@@ -46,8 +46,11 @@ class HomePageTest(TestCase):
 
 
 class ModelTest(TestCase):
-    def create_collection(self):
-        Collection.objects.create(amount=2.00)
+    def create_collection(self, amount):
+        self.client.post(
+            '/members/new_collection',
+            data={'collection_amount': amount}
+        )
 
     def start_coffers(self):
         Coffers.objects.create(amount=2.00)
@@ -73,7 +76,7 @@ class ModelTest(TestCase):
         self.assertEqual(saved_supplies[1].name, 'Coffee')
 
     def test_collection_from_member_changes_status(self):
-        self.create_collection()
+        self.create_collection(2.00)
         self.start_coffers()
         Member.objects.create(name='Charlie Cook', paid=False)
         self.client.get('/members/1/collect')
@@ -83,7 +86,7 @@ class ModelTest(TestCase):
 
     def test_collecting_from_member_increases_coffers(self):
         self.start_coffers()
-        self.create_collection()
+        self.create_collection(2.00)
         Member.objects.create(name='Charlie Cook', paid=False)
         self.client.get('/members/1/collect')
 
@@ -121,10 +124,13 @@ class ModelTest(TestCase):
         self.assertEqual(record_of_supplies[0].cost, 1.00)
 
     def test_collection_record_is_updated_when_new_collection_started(self):
-        pass #  todo
+        self.create_collection(2.00)
+        record_of_collections = Collection.objects.all()
+        self.assertEqual(str(record_of_collections[0].date), helper.get_current_date())
+        self.assertEqual(record_of_collections[0].amount, 2.00)
 
     def test_member_collection_is_updated_when_a_member_pays(self):
-        pass #  todo
+        pass  # todo
 
     def test_marking_supplies_as_depleted(self):
         Supply.objects.create(name='Teabags', stocked=True)
@@ -134,20 +140,13 @@ class ModelTest(TestCase):
         self.assertFalse(depleted_supply.stocked)
 
     def test_starting_collection_resets_collection_status(self):
-        self.create_collection()
         Member.objects.create(name='Charlie Cook', paid=True)
-        self.client.post(
-            '/members/new_collection',
-            data={'collection_amount': '2.00'}
-        )
+        self.create_collection(2.00)
         only_member = Member.objects.all()[0]
         self.assertFalse(only_member.paid)
 
     def test_collection_saves_correctly(self):
-        self.client.post(
-            '/members/new_collection',
-            data={'collection_amount': '2.55'}
-        )
+        self.create_collection(2.55)
         latest_collection_amount = helper.get_latest_collection_amount()
         latest_collection_date = helper.get_latest_collection_date()
         date_today = helper.get_current_date()
