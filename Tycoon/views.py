@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from tycoon.models import Member, Supply, Collection, Coffers
+from tycoon.models import Member, Supply, Collection, Coffers, SupplyRecord
 import tycoon.helpers as helper
 
 
@@ -54,6 +54,7 @@ def purchase(request, supply_id):
     new_coffers = float(current_coffers) - float(amount)
     Coffers.objects.create(amount=new_coffers)
     item = Supply.objects.get(id=supply_id)
+    SupplyRecord.objects.create(name=item.name, cost=amount)
     item.stocked = True
     item.save()
     return redirect('/')

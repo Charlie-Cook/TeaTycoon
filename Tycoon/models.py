@@ -20,3 +20,9 @@ class Collection(models.Model):
 class Coffers(models.Model):
     date = models.DateField(default=dt.datetime.today().strftime('%Y-%m-%d'))
     amount = models.FloatField(default=None)
+
+
+class SupplyRecord(models.Model):
+    name = models.TextField(default=None)
+    date = models.DateField(default=dt.datetime.today().strftime('%Y-%m-%d'))
+    cost = models.FloatField(default=None)

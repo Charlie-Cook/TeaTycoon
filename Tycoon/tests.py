@@ -1,7 +1,7 @@
 from django.core.urlresolvers import resolve
 from django.test import TestCase
 from tycoon.views import home_page
-from tycoon.models import Member, Supply, Collection, Coffers
+from tycoon.models import Member, Supply, Collection, Coffers, SupplyRecord
 import tycoon.helpers as helper
 
 
@@ -110,7 +110,21 @@ class ModelTest(TestCase):
         self.assertEqual(after_coffers, 0.5)
 
     def test_purchase_record_is_updated_when_buying_supply(self):
-        pass  # todo
+        Supply.objects.create(name='Teabags', stocked=False)
+        self.client.post(
+            '/supplies/1/purchase',
+            data={'purchase_amount': '1.00'}
+        )
+        record_of_supplies = SupplyRecord.objects.all()
+        self.assertEqual(record_of_supplies[0].name, 'Teabags')
+        self.assertEqual(str(record_of_supplies[0].date), helper.get_current_date())
+        self.assertEqual(record_of_supplies[0].cost, 1.00)
+
+    def test_collection_record_is_updated_when_new_collection_started(self):
+        pass #  todo
+
+    def test_member_collection_is_updated_when_a_member_pays(self):
+        pass #  todo
 
     def test_marking_supplies_as_depleted(self):
         Supply.objects.create(name='Teabags', stocked=True)
