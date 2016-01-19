@@ -5,6 +5,7 @@ import datetime as dt
 class Member(models.Model):
     name = models.TextField(default=None)
     paid = models.BooleanField(default=False)
+    email = models.TextField(default=None, null=True)
 
 
 class Supply(models.Model):

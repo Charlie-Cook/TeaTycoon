@@ -12,17 +12,18 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 import sqlite3
+from TeaTycoon.secrets import SECRET_KEY, EMAIL_HOST_PASSWORD
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-__location__ = os.path.realpath(
-    os.path.join(os.getcwd(), os.path.dirname(__file__))
-)
-with open(os.path.join(__location__, 'secrets')) as f:
-    SECRET_KEY = f.read().strip()
+# __location__ = os.path.realpath(
+#     os.path.join(os.getcwd(), os.path.dirname(__file__))
+# )
+# with open(os.path.join(__location__, 'secrets')) as f:
+#     SECRET_KEY = f.read().strip()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -126,3 +127,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static')
+
+# Email settings
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '465'
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = '***REMOVED***'

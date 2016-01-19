@@ -28,4 +28,5 @@ urlpatterns = [
     url(r'^supplies/add_supply$', views.new_supply, name='new_supply'),
     url(r'^supplies/(\d+)/purchase$', views.purchase, name='purchase'),
     url(r'^supplies/(\d+)/depleted$', views.depleted_supply, name='depleted_supply'),
+    url(r'^send_email', views.send_email, name='send_email'),
 ]

@@ -7,13 +7,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tycoon', '0003_member_paid'),
+        ('tycoon', '0002_auto_20160119_1650'),
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='supply',
-            name='stocked',
-            field=models.BooleanField(default=False),
+        migrations.AlterField(
+            model_name='member',
+            name='email',
+            field=models.TextField(default=None, null=True),
         ),
     ]

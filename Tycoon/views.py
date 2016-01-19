@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from tycoon.models import Member, Supply, Collection, Coffers, SupplyRecord
 import tycoon.helpers as helper
+from django.core.mail import send_mail
 
 
 def home_page(request):
@@ -39,7 +40,7 @@ def new_collection(request):
     float(amount)
     Collection.objects.create(amount=amount)
     Member.objects.filter(paid=True).update(paid=False)
-    return redirect('/')
+    return redirect('/send_email')
 
 
 def new_supply(request):
@@ -64,4 +65,15 @@ def depleted_supply(request, supply_id):
     item = Supply.objects.get(id=supply_id)
     item.stocked = False
     item.save()
+    return redirect('/')
+
+
+def send_email(request):
+    user_emails = Member.objects.values_list('email')
+    print(user_emails)
+    amount = helper.get_latest_collection_amount()
+    # send_mail('Tea Club Collection', 'Dear Tea Club member, the collection for the tea club is due.\n'
+    #           'The amount due is £%s.\nPlease make your payment to Charlie Cook when '
+    #           'possible.' % (str(amount)), '***REMOVED***',
+    #           ('***REMOVED***',), fail_silently=False)
     return redirect('/')
