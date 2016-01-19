@@ -30,7 +30,7 @@ class AdminVisitorTest(LiveServerTestCase):
         inputbox.send_keys(Keys.ENTER)
 
     def purchase_first_supply(self):
-        id_of_supply = Supply.objects.all()[0].id
+        id_of_supply = Supply.objects.order_by('-id')[0].id
         self.browser.execute_script('$("#purchase_form").attr("action", "supplies/%s/purchase")' % (id_of_supply,))
         purchase_button = self.browser.find_element_by_link_text('Purchase')
         purchase_button.click()
@@ -104,4 +104,4 @@ class AdminVisitorTest(LiveServerTestCase):
         coffers = self.browser.find_element_by_id('coffers_amount')
         after_coffers = coffers.text.replace('£', '')
         self.assertLess(float(after_coffers), float(before_coffers))
-        self.assertIs(float(after_coffers), 0.0)
+        self.assertEqual(float(after_coffers), 0.0)
