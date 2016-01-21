@@ -69,11 +69,11 @@ def depleted_supply(request, supply_id):
 
 
 def send_email(request):
-    user_emails = Member.objects.values_list('email')
+    user_emails = list(Member.objects.values_list('email', flat=True))
     print(user_emails)
     amount = helper.get_latest_collection_amount()
-    # send_mail('Tea Club Collection', 'Dear Tea Club member, the collection for the tea club is due.\n'
-    #           'The amount due is £%s.\nPlease make your payment to Charlie Cook when '
-    #           'possible.' % (str(amount)), '***REMOVED***',
-    #           ('***REMOVED***',), fail_silently=False)
+    send_mail('Tea Club Collection', 'Dear Tea Club member, the collection for the tea club is due.\n'
+              'The amount due is £%s.\nPlease make your payment to Charlie Cook when '
+              'possible.' % (str(amount)), '***REMOVED***',
+              recipient_list=user_emails, fail_silently=False)
     return redirect('/')
