@@ -1,7 +1,7 @@
 # TeaTycoon
-Tea club management system for Team 6
+Tea club management system
 
-Planned functionality:
+Functionality:
  - Manage tea club members
  - Manage tea club supplies
- 
+ - Track funds available

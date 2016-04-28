@@ -57,13 +57,13 @@ class ModelTest(TestCase):
 
     def test_saving_and_retrieving_members(self):
         Member.objects.create(name='Charlie Cook')
-        Member.objects.create(name='Vinnie Vinnicombe')
+        Member.objects.create(name='Robert Fortune')
 
         saved_members = Member.objects.all()
         self.assertEqual(saved_members.count(), 2)
 
         self.assertEqual(saved_members[0].name, 'Charlie Cook')
-        self.assertEqual(saved_members[1].name, 'Vinnie Vinnicombe')
+        self.assertEqual(saved_members[1].name, 'Robert Fortune')
 
     def test_saving_and_retrieving_supplies(self):
         Supply.objects.create(name='Teabags')
