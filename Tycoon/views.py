@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
 from tycoon.models import Member, Supply, Collection, Coffers, SupplyRecord
-import tycoon.helpers as helper
+from django.shortcuts import render, redirect
 from django.core.mail import send_mail
+import tycoon.helpers as helper
 
 
 def home_page(request):
